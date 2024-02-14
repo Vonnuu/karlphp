@@ -1,0 +1,32 @@
+<h2>Sisesta oma isikukood:</h2>
+    <form action="" method="get">
+        <input type="text" name="isikukood" placeholder="Sisesta isikukood">
+        <input type="submit" value="Kontrolli">
+    </form>
+    
+    <?php
+    if (!empty($_GET["isikukood"])) {
+        $isikukood = $_GET["isikukood"];
+        
+        function kontrollisik($isikukood) {
+            if (strlen($isikukood) !== 11) {
+                return "Isikukood peab olema 11 numbrit pikk.";
+            }
+            $paev = substr($isikukood, 5, 2);
+            $kuu = substr($isikukood, 3, 2);
+            $aasta = substr($isikukood, 1, 2);
+            
+            $sajandikontroll = intval(substr($isikukood, 1, 2));
+            $sajand = ($sajandikontroll < 22) ? "20" : "19";
+            
+            $sunnikuupaev = $sajand . $aasta . "-" . $kuu . "-" . $paev;
+        
+            $sugu = (intval(substr($isikukood, 0, 1)) % 2 == 0) ? "Naine" : "Mees";
+        
+            return "Sugu: $sugu, Sünnikuupäev: $sunnikuupaev";
+        }
+        
+        $tulemus = kontrollisik($isikukood);
+        echo "<p>$tulemus</p>";
+    }
+    ?>
